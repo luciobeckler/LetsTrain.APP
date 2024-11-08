@@ -1,0 +1,169 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Olá! Seja bem-vindo.</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-margin-top">
+  <form
+    *ngIf="isPrimeiroFormularioAparece"
+    [formGroup]="userContatoForm"
+    (ngSubmit)="onSubmit()"
+    class="form-container"
+  >
+    <ion-card>
+      <ion-card-header color="danger">
+        <ion-text color="dark">
+          <h3><b>Informações para contato:</b></h3>
+        </ion-text>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-item>
+          <ion-label color="medium" position="floating"
+            >Qual o seu nome?</ion-label
+          >
+          <ion-input formControlName="nome" type="text"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label color="medium" position="floating"
+            >Insira seu Email:</ion-label
+          >
+          <ion-input formControlName="email" type="email"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label color="medium" position="floating"
+            >Insira seu Telefone para contato:</ion-label
+          >
+          <ion-input formControlName="telefone" type="tel"></ion-input>
+        </ion-item>
+
+        <ion-button
+          (click)="segundoForms()"
+          expand="block"
+          color="danger"
+          class="center-button"
+          >Próximo</ion-button
+        >
+      </ion-card-content>
+    </ion-card>
+  </form>
+
+  <form
+    *ngIf="isSegundoFormularioAparece"
+    [formGroup]="userInformationForm"
+    (ngSubmit)="onSubmit()"
+    class="form-container"
+  >
+    <ion-card>
+      <ion-card-header color="danger">
+        <ion-text>
+          <h3><b>Informações opcionais:</b></h3>
+          <ion-label
+            >Utilizaremos estas informações para fornecer relatórios sobre seu
+            progresso. Caso nao queira fornecer os dados a baixo clique em
+            próximo.</ion-label
+          >
+        </ion-text>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-item>
+          <ion-label color="medium" position="floating"
+            >Qual o seu peso atual? (Kg)</ion-label
+          >
+          <ion-input formControlName="nome" type="text"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label color="medium" position="floating"
+            >Qual sua altura atual? (m)</ion-label
+          >
+          <ion-input formControlName="email" type="email"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label color="medium" position="floating"
+            >Você já possui alguma graduação? (Nº do khan)</ion-label
+          >
+          <ion-input formControlName="telefone" type="tel"></ion-input>
+        </ion-item>
+
+        <ion-button
+          (click)="terceiroForms()"
+          expand="block"
+          color="danger"
+          class="center-button"
+          >Próximo</ion-button
+        >
+      </ion-card-content>
+    </ion-card>
+  </form>
+
+  <form
+    *ngIf="isTerceiroFormularioAparece"
+    [formGroup]="registroAlunoForm"
+    (ngSubmit)="onSubmit()"
+    class="form-container"
+  >
+    <ion-card>
+      <ion-card-header color="danger">
+        <ion-text>
+          <h3><b>Informações finais</b></h3>
+        </ion-text>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-item>
+          <ion-label color="medium" position="floating"
+            >Qual será o dia de vencimento da matrícula?</ion-label
+          >
+          <ion-input formControlName="nome" type="number"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label color="medium" position="floating">Senha</ion-label>
+          <ion-input formControlName="email" type="password"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label color="medium" position="floating"
+            >Repita a senha</ion-label
+          >
+          <ion-input formControlName="telefone" type="password"></ion-input>
+        </ion-item>
+        <ion-item lines="none">
+          <ion-checkbox
+            checked="false"
+            color="danger"
+            slot="start"
+            formControlName="termos"
+          ></ion-checkbox>
+          <ion-label class="checkbox-label"
+            >Eu li e aceito os termos da academia</ion-label
+          >
+        </ion-item>
+        <ion-button
+          (click)="onSubmit()"
+          expand="block"
+          color="danger"
+          class="center-button"
+          >Próximo</ion-button
+        >
+      </ion-card-content>
+    </ion-card>
+  </form>
+  <ion-item *ngIf="isAlunoCadastrado">
+    <ion-img
+      class="logo-img ion-margin-top"
+      src="../../../assets/images/Fernando-logo.jpg"
+      alt="Logo da academia"
+    ></ion-img>
+    <ion-item class="ion-margin-top">
+      <ion-text
+        >Bem vindo ao Maximus Team! <br />
+        <br />
+        Aguarde algum professor validar o seu cadastro para acessar o aplicativo
+      </ion-text>
+    </ion-item>
+  </ion-item>
+</ion-content>
