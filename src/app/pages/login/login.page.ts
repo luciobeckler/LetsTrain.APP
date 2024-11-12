@@ -1,6 +1,11 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import {
+  FormBuilder,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import {
   IonContent,
   IonHeader,
@@ -26,6 +31,7 @@ import {
 import { addIcons } from 'ionicons';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { REGEX_VALIDA_EMAIL } from 'src/app/helper/constantes';
 
 @Component({
   selector: 'app-login',
@@ -47,29 +53,22 @@ import { HttpClient } from '@angular/common/http';
     FormsModule,
     IonText,
     IonIcon,
+    ReactiveFormsModule,
   ],
 })
 export class LoginPage {
-  email: string = '';
-  password: string = '';
+  constructor(private router: Router, public formBuilder: FormBuilder) {}
 
-  showPassword: boolean = false;
+  form = this.formBuilder.group({
+    email: [''],
+    password: [''],
+  });
 
   onSignIn() {
     this.router.navigate(['./sign-in']);
   }
 
-  onLogin() {
-    this.router.navigate(['./home']);
+  onSubmit() {
+    console.log(this.form.value);
   }
-
-  limpaEmail() {
-    this.email = '';
-  }
-
-  trocaVisibilidadeSenha() {
-    this.showPassword = !this.showPassword;
-  }
-
-  constructor(private router: Router) {}
 }

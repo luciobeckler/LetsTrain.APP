@@ -25,19 +25,40 @@
           <ion-input formControlName="nome" type="text"></ion-input>
         </ion-item>
 
+        <div
+          *ngIf="userContatoForm.get('nome')?.hasError('pattern') && userContatoForm.get('nome')?.touched"
+          class="erro"
+        >
+          <ion-text color="danger">Nome inválido</ion-text>
+        </div>
+
         <ion-item>
           <ion-label color="medium" position="floating"
             >Insira seu Email:</ion-label
           >
           <ion-input formControlName="email" type="email"></ion-input>
         </ion-item>
+        <div
+          *ngIf="userContatoForm.get('email')?.hasError('pattern') && userContatoForm.get('email')?.touched"
+          class="erro"
+        >
+          <ion-text color="danger">Email inválido.</ion-text>
+        </div>
 
         <ion-item>
           <ion-label color="medium" position="floating"
             >Insira seu Telefone para contato:</ion-label
           >
-          <ion-input formControlName="telefone" type="tel"></ion-input>
+          <ion-input [] formControlName="telefone" type="tel"></ion-input>
         </ion-item>
+        <div
+          *ngIf="userContatoForm.get('telefone')?.hasError('pattern') && userContatoForm.get('telefone')?.touched"
+          class="erro"
+        >
+          <ion-text color="danger"
+            >Telefone deve estar no formato 319xxxxyyyy</ion-text
+          >
+        </div>
 
         <ion-button
           (click)="segundoForms()"
@@ -46,6 +67,12 @@
           class="center-button"
           >Próximo</ion-button
         >
+        <ion-alert
+          [isOpen]="isAlertAberto"
+          message="Preencha os dados solicitados."
+          (didDismiss)="setAlertAberto(false)"
+          [buttons]="alertButtons"
+        ></ion-alert>
       </ion-card-content>
     </ion-card>
   </form>
@@ -58,7 +85,7 @@
   >
     <ion-card>
       <ion-card-header color="danger">
-        <ion-text>
+        <ion-text color="dark">
           <h3><b>Informações opcionais:</b></h3>
           <ion-label
             >Utilizaremos estas informações para fornecer relatórios sobre seu

@@ -8,39 +8,42 @@
 
   <ion-card class="ion-margin-top">
     <ion-card-content>
-      <ion-item>
-        <ion-label position="floating">Email:</ion-label>
-        <ion-input [(ngModel)]="email" type="text"></ion-input>
-      </ion-item>
+      <ion-form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <ion-item>
+          <ion-label position="floating">Email:</ion-label>
+          <ion-input formControlName="email" type="text"></ion-input>
+        </ion-item>
 
-      <ion-item>
-        <ion-label position="floating">Senha:</ion-label>
-        <ion-input [(ngModel)]="password" type="password"></ion-input>
-      </ion-item>
+        <ion-item>
+          <ion-label position="floating">Senha:</ion-label>
+          <ion-input formControlName="password" type="password"></ion-input>
+        </ion-item>
 
-      <ion-item lines="none" class="ion-text-center">
-        <ion-text>
-          Não tem uma conta?
-          <span
-            (click)="onSignIn()"
-            style="color: var(--ion-color-danger); cursor: pointer"
+        <ion-item lines="none" class="ion-text-center">
+          <ion-text>
+            Não tem uma conta?
+            <span
+              (click)="onSignIn()"
+              style="color: var(--ion-color-danger); cursor: pointer"
+            >
+              Inscreva-se!
+            </span>
+          </ion-text>
+        </ion-item>
+
+        <ion-item lines="none">
+          <ion-button
+            (click)="onSubmit()"
+            type="submit"
+            expand="block"
+            color="danger"
+            fill="clear"
           >
-            Inscreva-se!
-          </span>
-        </ion-text>
-      </ion-item>
-
-      <ion-item lines="none">
-        <ion-button
-          expand="block"
-          (click)="onLogin()"
-          color="danger"
-          fill="clear"
-        >
-          LOGIN
-          <ion-icon name="arrow-forward-outline"></ion-icon>
-        </ion-button>
-      </ion-item>
+            LOGIN
+            <ion-icon name="arrow-forward-outline"></ion-icon>
+          </ion-button>
+        </ion-item>
+      </ion-form>
     </ion-card-content>
   </ion-card>
 </ion-content>

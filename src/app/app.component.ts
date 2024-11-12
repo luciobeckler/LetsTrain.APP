@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { provideHttpClient } from '@angular/common/http';
+import { ApplicationConfig, Component } from '@angular/core';
 import { IonApp, IonRouterOutlet } from '@ionic/angular/standalone';
 
 @Component({
@@ -10,3 +11,7 @@ import { IonApp, IonRouterOutlet } from '@ionic/angular/standalone';
 export class AppComponent {
   constructor() {}
 }
+
+export const appConfig: ApplicationConfig = {
+  providers: [provideHttpClient()],
+};

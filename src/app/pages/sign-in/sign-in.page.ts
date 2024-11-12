@@ -1,62 +1,28 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, NgModule, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   FormBuilder,
   FormControl,
   FormGroup,
   FormsModule,
+  NgModel,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { IonicModule } from '@ionic/angular';
 import {
-  IonContent,
-  IonHeader,
-  IonTitle,
-  IonToolbar,
-  IonLabel,
-  IonItem,
-  IonList,
-  IonButton,
-  IonInput,
-  IonCard,
-  IonCardContent,
-  IonCardHeader,
-  IonText,
-  IonDatetime,
-  IonCheckbox,
-  IonImg,
-} from '@ionic/angular/standalone';
-
+  REGEX_TELEFONE,
+  REGEX_VALIDA_EMAIL,
+  REGEX_VALIDA_NOME_COMPLETO,
+} from 'src/app/helper/constantes';
 @Component({
   selector: 'app-sign-in',
   templateUrl: './sign-in.page.html',
   styleUrls: ['./sign-in.page.scss'],
   standalone: true,
-  imports: [
-    IonImg,
-    IonCheckbox,
-    IonDatetime,
-    IonText,
-    IonCardHeader,
-    IonCardContent,
-    IonCard,
-    IonInput,
-    IonButton,
-    IonItem,
-    IonLabel,
-    IonContent,
-    IonHeader,
-    IonTitle,
-    IonToolbar,
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-  ],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, IonicModule],
 })
 export class SignInPage {
-  REGEX_VALIDA_EMAIL: string =
-    '^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$';
-
   userContatoForm: FormGroup;
   isPrimeiroFormularioAparece = true;
 
@@ -67,18 +33,32 @@ export class SignInPage {
   isTerceiroFormularioAparece = false;
 
   isAlunoCadastrado = false;
+  isAlertAberto = false;
+  alertButtons = ['Ok'];
 
   constructor(private formBuilder: FormBuilder) {
     this.userContatoForm = this.formBuilder.group({
-      nome: new FormControl('', Validators.required),
+      nome: new FormControl(
+        '',
+        Validators.compose([
+          Validators.required,
+          Validators.pattern(REGEX_VALIDA_NOME_COMPLETO),
+        ])
+      ),
       email: new FormControl(
         '',
         Validators.compose([
           Validators.required,
-          Validators.pattern(this.REGEX_VALIDA_EMAIL),
+          Validators.pattern(REGEX_VALIDA_EMAIL),
         ])
       ),
-      telefone: new FormControl('', Validators.required),
+      telefone: new FormControl(
+        '',
+        Validators.compose([
+          Validators.required,
+          Validators.pattern(REGEX_TELEFONE),
+        ])
+      ),
     });
 
     this.userInformationForm = this.formBuilder.group({
@@ -97,9 +77,11 @@ export class SignInPage {
   }
 
   segundoForms() {
-    this.isPrimeiroFormularioAparece = false;
-    this.isSegundoFormularioAparece = true;
-    this.isTerceiroFormularioAparece = false;
+    if (this.userContatoForm.valid) {
+      this.isPrimeiroFormularioAparece = false;
+      this.isSegundoFormularioAparece = true;
+      this.isTerceiroFormularioAparece = false;
+    } else this.setAlertAberto(true);
   }
 
   terceiroForms() {
@@ -113,5 +95,9 @@ export class SignInPage {
     this.isPrimeiroFormularioAparece = false;
     this.isSegundoFormularioAparece = false;
     this.isTerceiroFormularioAparece = false;
+  }
+
+  setAlertAberto(isAberto: boolean) {
+    this.isAlertAberto = isAberto;
   }
 }
