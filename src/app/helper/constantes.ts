@@ -8,25 +8,3 @@ export const REGEX_VALIDA_NOME_COMPLETO: string =
 export const REGEX_TELEFONE: string = '^319\\d{8}$';
 
 //*Máscaras
-export const PHONE_MASK: MaskitoOptions = {
-  mask: [
-    '+',
-    '5',
-    '5',
-    ' ',
-    '(',
-    /\d/,
-    /\d/,
-    /\d/,
-    ')',
-    ' ',
-    /\d/,
-    /\d/,
-    /\d/,
-    '-',
-    /\d/,
-    /\d/,
-    /\d/,
-    /\d/,
-  ],
-};
