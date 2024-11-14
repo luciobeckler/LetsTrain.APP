@@ -1,17 +1,17 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>Olá! Seja bem-vindo.</ion-title>
+<ion-header *ngIf="!isAlunoCadastrado">
+  <ion-toolbar color="danger">
+    <ion-buttons slot="start">
+      <ion-button (click)="voltaFormAnterior()">
+        <ion-icon color="dark" slot="icon-only" name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title color="dark">Cadastro</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-margin-top">
-  <form
-    *ngIf="isPrimeiroFormularioAparece"
-    [formGroup]="userContatoForm"
-    (ngSubmit)="onSubmit()"
-    class="form-container"
-  >
-    <ion-card>
+  <form *ngIf="!isAlunoCadastrado" [formGroup]="form" class="form-container">
+    <ion-card *ngIf="exibeCards[0]">
       <ion-card-header color="danger">
         <ion-text color="dark">
           <h3><b>Informações para contato:</b></h3>
@@ -24,9 +24,8 @@
           >
           <ion-input formControlName="nome" type="text"></ion-input>
         </ion-item>
-
         <div
-          *ngIf="userContatoForm.get('nome')?.hasError('pattern') && userContatoForm.get('nome')?.touched"
+          *ngIf="form.get('nome')?.hasError('pattern') && form.get('nome')?.touched"
           class="erro"
         >
           <ion-text color="danger">Nome inválido</ion-text>
@@ -39,7 +38,7 @@
           <ion-input formControlName="email" type="email"></ion-input>
         </ion-item>
         <div
-          *ngIf="userContatoForm.get('email')?.hasError('pattern') && userContatoForm.get('email')?.touched"
+          *ngIf="form.get('email')?.hasError('pattern') && form.get('email')?.touched"
           class="erro"
         >
           <ion-text color="danger">Email inválido.</ion-text>
@@ -52,7 +51,7 @@
           <ion-input formControlName="telefone" type="tel"></ion-input>
         </ion-item>
         <div
-          *ngIf="userContatoForm.get('telefone')?.hasError('pattern') && userContatoForm.get('telefone')?.touched"
+          *ngIf="form.get('telefone')?.hasError('pattern') && form.get('telefone')?.touched"
           class="erro"
         >
           <ion-text color="danger"
@@ -61,29 +60,22 @@
         </div>
 
         <ion-button
-          (click)="segundoForms()"
+          (click)="fechaCardAtualMostraProximoValidandoCardAtual(0,1)"
           expand="block"
           color="danger"
           class="center-button"
-          >Próximo</ion-button
+          ><ion-text color="dark">Próximo</ion-text></ion-button
         >
         <ion-alert
           [isOpen]="isAlertAberto"
-          message="Preencha os dados solicitados."
+          message="Preencha corretamente os dados solicitados."
           (didDismiss)="setAlertAberto(false)"
           [buttons]="alertButtons"
         ></ion-alert>
       </ion-card-content>
     </ion-card>
-  </form>
 
-  <form
-    *ngIf="isSegundoFormularioAparece"
-    [formGroup]="userInformationForm"
-    (ngSubmit)="onSubmit()"
-    class="form-container"
-  >
-    <ion-card>
+    <ion-card *ngIf="exibeCards[1]">
       <ion-card-header color="danger">
         <ion-text color="dark">
           <h3><b>Informações opcionais:</b></h3>
@@ -99,43 +91,42 @@
           <ion-label color="medium" position="floating"
             >Qual o seu peso atual? (Kg)</ion-label
           >
-          <ion-input formControlName="nome" type="text"></ion-input>
+          <ion-input formControlName="pesoEmKg" type="number"></ion-input>
         </ion-item>
 
         <ion-item>
           <ion-label color="medium" position="floating"
             >Qual sua altura atual? (m)</ion-label
           >
-          <ion-input formControlName="email" type="email"></ion-input>
+          <ion-input formControlName="alturaEmM" type="number"></ion-input>
         </ion-item>
 
         <ion-item>
           <ion-label color="medium" position="floating"
             >Você já possui alguma graduação? (Nº do khan)</ion-label
           >
-          <ion-input formControlName="telefone" type="tel"></ion-input>
+          <ion-input formControlName="graduacao" type="number"></ion-input>
         </ion-item>
 
         <ion-button
-          (click)="terceiroForms()"
+          (click)="fechaCardAtualMostraProximoValidandoCardAtual(1,2)"
           expand="block"
           color="danger"
           class="center-button"
-          >Próximo</ion-button
-        >
+          ><ion-text color="dark">Próximo</ion-text>
+        </ion-button>
+        <ion-alert
+          [isOpen]="isAlertAberto"
+          message="Preencha corretamente os dados solicitados."
+          (didDismiss)="setAlertAberto(false)"
+          [buttons]="alertButtons"
+        ></ion-alert>
       </ion-card-content>
     </ion-card>
-  </form>
 
-  <form
-    *ngIf="isTerceiroFormularioAparece"
-    [formGroup]="registroAlunoForm"
-    (ngSubmit)="onSubmit()"
-    class="form-container"
-  >
-    <ion-card>
+    <ion-card *ngIf="exibeCards[2]">
       <ion-card-header color="danger">
-        <ion-text>
+        <ion-text color="dark">
           <h3><b>Informações finais</b></h3>
         </ion-text>
       </ion-card-header>
@@ -144,20 +135,60 @@
           <ion-label color="medium" position="floating"
             >Qual será o dia de vencimento da matrícula?</ion-label
           >
-          <ion-input formControlName="nome" type="number"></ion-input>
+          <ion-input
+            formControlName="diaVencimentoMatricula"
+            type="number"
+          ></ion-input>
         </ion-item>
+        <div
+          *ngIf="form.get('diaVencimentoMatricula')?.hasError('required') && form.get('diaVencimentoMatricula')?.touched"
+          class="erro"
+        >
+          <ion-text color="danger">Este campo é obrigatório.</ion-text>
+        </div>
+        <div
+          *ngIf="(form.get('diaVencimentoMatricula')?.hasError('min') || form.get('diaVencimentoMatricula')?.hasError('max')) && form.get('diaVencimentoMatricula')?.touched"
+          class="erro"
+        >
+          <ion-text color="danger">Insira um valor entre 1 e 31.</ion-text>
+        </div>
 
         <ion-item>
           <ion-label color="medium" position="floating">Senha</ion-label>
-          <ion-input formControlName="email" type="password"></ion-input>
+          <ion-input formControlName="senha" type="password"></ion-input>
         </ion-item>
+        <div
+          *ngIf="form.get('senha')?.hasError('required') && form.get('senha')?.touched"
+          class="erro"
+        >
+          <ion-text color="danger">Este campo é obrigatório.</ion-text>
+        </div>
+        <div
+          *ngIf="form.get('senha')?.hasError('pattern') && form.get('senha')?.touched"
+          class="erro"
+        >
+          <ion-text color="danger"
+            >A senha deve possuir 8 caracteres, sendo pelo menos um
+            numérico.</ion-text
+          >
+        </div>
 
         <ion-item>
           <ion-label color="medium" position="floating"
             >Repita a senha</ion-label
           >
-          <ion-input formControlName="telefone" type="password"></ion-input>
+          <ion-input
+            formControlName="confirmaSenha"
+            type="password"
+          ></ion-input>
         </ion-item>
+        <div
+          *ngIf="form.hasError('passwordMismatch') && form.get('confirmaSenha')?.touched"
+          class="erro"
+        >
+          <ion-text color="danger">As senhas não coincidem.</ion-text>
+        </div>
+
         <ion-item lines="none">
           <ion-checkbox
             checked="false"
@@ -169,28 +200,46 @@
             >Eu li e aceito os termos da academia</ion-label
           >
         </ion-item>
+
         <ion-button
           (click)="onSubmit()"
           expand="block"
           color="danger"
           class="center-button"
-          >Próximo</ion-button
-        >
+          ><ion-text color="dark">Próximo</ion-text>
+        </ion-button>
+        <ion-alert
+          [isOpen]="isAlertAberto"
+          message="Preencha corretamente os dados solicitados."
+          (didDismiss)="setAlertAberto(false)"
+          [buttons]="alertButtons"
+        ></ion-alert>
       </ion-card-content>
     </ion-card>
   </form>
-  <ion-item *ngIf="isAlunoCadastrado">
-    <ion-img
-      class="logo-img ion-margin-top"
-      src="../../../assets/images/Fernando-logo.jpg"
-      alt="Logo da academia"
-    ></ion-img>
-    <ion-item class="ion-margin-top">
-      <ion-text
-        >Bem vindo ao Maximus Team! <br />
-        <br />
-        Aguarde algum professor validar o seu cadastro para acessar o aplicativo
+
+  <ion-card *ngIf="isAlunoCadastrado" class="success-card">
+    <ion-card-header color="success">
+      <ion-text color="dark">
+        <h2><b>Cadastro realizado com sucesso!</b></h2>
       </ion-text>
-    </ion-item>
-  </ion-item>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-img
+        class="logo-img ion-margin-top"
+        src="../../../assets/images/Fernando-logo.jpg"
+        alt="Logo da academia"
+      ></ion-img>
+      <br />
+      <ion-text color="dark">
+        <p class="ion-text-center ion-margin-top">
+          Bem-vindo ao Maximus Team! <br /><br />
+          Aguarde a validação de um professor para acessar o aplicativo.
+        </p>
+      </ion-text>
+      <ion-button expand="block" color="success" (click)="voltarParaLogin()">
+        Voltar para Login
+      </ion-button>
+    </ion-card-content>
+  </ion-card>
 </ion-content>
