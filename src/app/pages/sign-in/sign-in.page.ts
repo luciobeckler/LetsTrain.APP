@@ -1,5 +1,5 @@
-import { Component, NgModule, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component } from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
@@ -10,32 +10,35 @@ import {
   ValidatorFn,
   Validators,
 } from '@angular/forms';
+import { Router } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
+import { MaskitoDirective } from '@maskito/angular';
+import { MaskitoElementPredicate, MaskitoOptions } from '@maskito/core';
+import { AuthService } from 'src/app/api/auth.service';
 import {
   REGEX_SENHA,
   REGEX_TELEFONE,
-  REGEX_VALIDA_EMAIL,
   REGEX_VALIDA_NOME_COMPLETO,
 } from 'src/app/helper/constantes';
-import { ArrayType } from '@angular/compiler';
-import { Router } from '@angular/router';
 @Component({
   selector: 'app-sign-in',
   templateUrl: './sign-in.page.html',
   styleUrls: ['./sign-in.page.scss'],
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, IonicModule],
+  imports: [
+    MaskitoDirective,
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    IonicModule,
+  ],
 })
 export class SignInPage {
-  form: FormGroup;
-
-  exibeCards: boolean[] = [true, false, false];
-
-  isAlunoCadastrado = false;
-  isAlertAberto = false;
-  alertButtons = ['Ok'];
-
-  constructor(private formBuilder: FormBuilder, private router: Router) {
+  constructor(
+    private formBuilder: FormBuilder,
+    private router: Router,
+    private service: AuthService
+  ) {
     this.exibeCards = [true, false, false];
 
     this.form = this.formBuilder.group(
@@ -49,10 +52,7 @@ export class SignInPage {
         ),
         email: new FormControl(
           '',
-          Validators.compose([
-            Validators.required,
-            Validators.pattern(REGEX_VALIDA_EMAIL),
-          ])
+          Validators.compose([Validators.required, Validators.email])
         ),
         telefone: new FormControl(
           '',
@@ -61,9 +61,9 @@ export class SignInPage {
             Validators.pattern(REGEX_TELEFONE),
           ])
         ),
-        pesoEmKg: new FormControl(0),
-        alturaEmM: new FormControl(0),
-        graduacao: new FormControl(0),
+        pesoEmKg: new FormControl(70, Validators.required),
+        alturaEmM: new FormControl(1.75, Validators.required),
+        graduacao: new FormControl(0, Validators.required),
         diaVencimentoMatricula: new FormControl(
           1,
           Validators.compose([
@@ -77,11 +77,43 @@ export class SignInPage {
           Validators.pattern(REGEX_SENHA),
         ]),
         confirmaSenha: new FormControl('', Validators.required),
-        termos: new FormControl(false, Validators.pattern('true')),
+        termos: new FormControl(false, Validators.requiredTrue),
       },
       { validators: this.confirmPasswordValidator }
     );
   }
+
+  form: FormGroup;
+  exibeCards: boolean[] = [true, false, false];
+  isAlunoCadastrado = false;
+  isAlertAberto = false;
+  alertButtons = ['Ok'];
+
+  readonly phoneMask: MaskitoOptions = {
+    mask: [
+      '+',
+      '5',
+      '5',
+      ' ',
+      '(',
+      /\d/,
+      /\d/,
+      ')',
+      ' ',
+      /\d/,
+      /\d/,
+      /\d/,
+      /\d/,
+      /\d/,
+      '-',
+      /\d/,
+      /\d/,
+      /\d/,
+      /\d/,
+    ],
+  };
+  readonly maskPredicate: MaskitoElementPredicate = async (el) =>
+    (el as HTMLIonInputElement).getInputElement();
 
   fechaCardAtualMostraProximoValidandoCardAtual(
     numeroCardAtual: number,
@@ -127,14 +159,17 @@ export class SignInPage {
   }
 
   onSubmit() {
-    if (this.validaCardAtual(2)) {
+    if (this.validaCardAtual(2) && this.form.valid) {
       this.enviaDados(this.form.value);
       this.fechaCardAtualMostraProximoValidandoCardAtual(2, 3);
     } else this.setAlertAberto(true);
   }
 
   enviaDados(dados: object) {
-    console.log(dados);
+    this.service.createUser(dados).subscribe({
+      next: (res) => console.log(res),
+      error: (err) => console.log(err),
+    });
   }
 
   voltarParaLogin() {

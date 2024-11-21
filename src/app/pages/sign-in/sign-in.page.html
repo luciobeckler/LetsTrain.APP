@@ -38,7 +38,7 @@
           <ion-input formControlName="email" type="email"></ion-input>
         </ion-item>
         <div
-          *ngIf="form.get('email')?.hasError('pattern') && form.get('email')?.touched"
+          *ngIf="form.get('email')?.hasError('email') && form.get('email')?.touched"
           class="erro"
         >
           <ion-text color="danger">Email inválido.</ion-text>
@@ -48,7 +48,13 @@
           <ion-label color="medium" position="floating"
             >Insira seu Telefone para contato:</ion-label
           >
-          <ion-input formControlName="telefone" type="tel"></ion-input>
+          <ion-input
+            placeholder="+55 (31) xxxxx-xxxx"
+            [maskito]="phoneMask"
+            [maskitoElement]="maskPredicate"
+            formControlName="telefone"
+            type="tel"
+          ></ion-input>
         </ion-item>
         <div
           *ngIf="form.get('telefone')?.hasError('pattern') && form.get('telefone')?.touched"

@@ -13,5 +13,5 @@ export class AppComponent {
 }
 
 export const appConfig: ApplicationConfig = {
-  providers: [provideHttpClient()],
+  providers: [],
 };
