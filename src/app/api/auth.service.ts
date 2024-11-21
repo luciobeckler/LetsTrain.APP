@@ -10,6 +10,6 @@ export class AuthService {
   baseUrl = 'https://localhost:7288/api';
 
   createUser(formData: any) {
-    return this.http.post(this.baseUrl + '/register', formData);
+    return this.http.post(this.baseUrl + '/signup', formData);
   }
 }

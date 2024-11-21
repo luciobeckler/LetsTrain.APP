@@ -20,6 +20,7 @@ import {
   REGEX_TELEFONE,
   REGEX_VALIDA_NOME_COMPLETO,
 } from 'src/app/helper/constantes';
+import { Aluno } from 'src/app/interface/aluno.interface';
 @Component({
   selector: 'app-sign-in',
   templateUrl: './sign-in.page.html',
@@ -43,28 +44,28 @@ export class SignInPage {
 
     this.form = this.formBuilder.group(
       {
-        nome: new FormControl(
+        Nome: new FormControl(
           '',
           Validators.compose([
             Validators.required,
             Validators.pattern(REGEX_VALIDA_NOME_COMPLETO),
           ])
         ),
-        email: new FormControl(
+        Email: new FormControl(
           '',
           Validators.compose([Validators.required, Validators.email])
         ),
-        telefone: new FormControl(
+        Telefone: new FormControl(
           '',
           Validators.compose([
             Validators.required,
             Validators.pattern(REGEX_TELEFONE),
           ])
         ),
-        pesoEmKg: new FormControl(70, Validators.required),
-        alturaEmM: new FormControl(1.75, Validators.required),
-        graduacao: new FormControl(0, Validators.required),
-        diaVencimentoMatricula: new FormControl(
+        PesoEmKg: new FormControl(70, Validators.required),
+        AlturaEmM: new FormControl(1.75, Validators.required),
+        Graduacao: new FormControl(0, Validators.required),
+        DiaVencimentoMatricula: new FormControl(
           1,
           Validators.compose([
             Validators.required,
@@ -72,12 +73,12 @@ export class SignInPage {
             Validators.max(31),
           ])
         ),
-        senha: new FormControl('', [
+        Password: new FormControl('', [
           Validators.required,
           Validators.pattern(REGEX_SENHA),
         ]),
-        confirmaSenha: new FormControl('', Validators.required),
-        termos: new FormControl(false, Validators.requiredTrue),
+        ConfirmaPassword: new FormControl('', Validators.required),
+        Termos: new FormControl(false, Validators.requiredTrue),
       },
       { validators: this.confirmPasswordValidator }
     );
@@ -136,17 +137,17 @@ export class SignInPage {
     switch (cardAtual) {
       case 0:
         if (
-          this.form.get('nome')?.valid &&
-          this.form.get('email')?.valid &&
-          this.form.get('telefone')?.valid
+          this.form.get('Nome')?.valid &&
+          this.form.get('Email')?.valid &&
+          this.form.get('Telefone')?.valid
         )
           return true;
         else return false;
       case 1:
         if (
-          this.form.get('pesoEmKg')?.valid &&
-          this.form.get('alturaEmM')?.valid &&
-          this.form.get('graduacao')?.valid
+          this.form.get('PesoEmKg')?.valid &&
+          this.form.get('AlturaEmM')?.valid &&
+          this.form.get('Graduacao')?.valid
         )
           return true;
         else return false;
@@ -165,7 +166,8 @@ export class SignInPage {
     } else this.setAlertAberto(true);
   }
 
-  enviaDados(dados: object) {
+  enviaDados(dados: Aluno) {
+    console.log(dados);
     this.service.createUser(dados).subscribe({
       next: (res) => console.log(res),
       error: (err) => console.log(err),
@@ -188,8 +190,8 @@ export class SignInPage {
   }
 
   confirmPasswordValidator: ValidatorFn = (control: AbstractControl) => {
-    const senha = control.get('senha')?.value;
-    const confirmaSenha = control.get('confirmaSenha')?.value;
+    const senha = control.get('Password')?.value;
+    const confirmaSenha = control.get('ConfirmaPassword')?.value;
     return senha === confirmaSenha ? null : { passwordMismatch: true };
   };
 

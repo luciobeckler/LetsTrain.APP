@@ -22,10 +22,10 @@
           <ion-label color="medium" position="floating"
             >Qual o seu nome?</ion-label
           >
-          <ion-input formControlName="nome" type="text"></ion-input>
+          <ion-input formControlName="Nome" type="text"></ion-input>
         </ion-item>
         <div
-          *ngIf="form.get('nome')?.hasError('pattern') && form.get('nome')?.touched"
+          *ngIf="form.get('Nome')?.hasError('pattern') && form.get('Nome')?.touched"
           class="erro"
         >
           <ion-text color="danger">Nome inválido</ion-text>
@@ -35,10 +35,10 @@
           <ion-label color="medium" position="floating"
             >Insira seu Email:</ion-label
           >
-          <ion-input formControlName="email" type="email"></ion-input>
+          <ion-input formControlName="Email" type="email"></ion-input>
         </ion-item>
         <div
-          *ngIf="form.get('email')?.hasError('email') && form.get('email')?.touched"
+          *ngIf="form.get('Email')?.hasError('Email') && form.get('Email')?.touched"
           class="erro"
         >
           <ion-text color="danger">Email inválido.</ion-text>
@@ -52,12 +52,12 @@
             placeholder="+55 (31) xxxxx-xxxx"
             [maskito]="phoneMask"
             [maskitoElement]="maskPredicate"
-            formControlName="telefone"
+            formControlName="Telefone"
             type="tel"
           ></ion-input>
         </ion-item>
         <div
-          *ngIf="form.get('telefone')?.hasError('pattern') && form.get('telefone')?.touched"
+          *ngIf="form.get('Telefone')?.hasError('pattern') && form.get('Telefone')?.touched"
           class="erro"
         >
           <ion-text color="danger"
@@ -97,21 +97,21 @@
           <ion-label color="medium" position="floating"
             >Qual o seu peso atual? (Kg)</ion-label
           >
-          <ion-input formControlName="pesoEmKg" type="number"></ion-input>
+          <ion-input formControlName="PesoEmKg" type="number"></ion-input>
         </ion-item>
 
         <ion-item>
           <ion-label color="medium" position="floating"
             >Qual sua altura atual? (m)</ion-label
           >
-          <ion-input formControlName="alturaEmM" type="number"></ion-input>
+          <ion-input formControlName="AlturaEmM" type="number"></ion-input>
         </ion-item>
 
         <ion-item>
           <ion-label color="medium" position="floating"
             >Você já possui alguma graduação? (Nº do khan)</ion-label
           >
-          <ion-input formControlName="graduacao" type="number"></ion-input>
+          <ion-input formControlName="Graduacao" type="number"></ion-input>
         </ion-item>
 
         <ion-button
@@ -142,7 +142,7 @@
             >Qual será o dia de vencimento da matrícula?</ion-label
           >
           <ion-input
-            formControlName="diaVencimentoMatricula"
+            formControlName="DiaVencimentoMatricula"
             type="number"
           ></ion-input>
         </ion-item>
@@ -161,16 +161,16 @@
 
         <ion-item>
           <ion-label color="medium" position="floating">Senha</ion-label>
-          <ion-input formControlName="senha" type="password"></ion-input>
+          <ion-input formControlName="Password" type="password"></ion-input>
         </ion-item>
         <div
-          *ngIf="form.get('senha')?.hasError('required') && form.get('senha')?.touched"
+          *ngIf="form.get('Password')?.hasError('required') && form.get('Password')?.touched"
           class="erro"
         >
           <ion-text color="danger">Este campo é obrigatório.</ion-text>
         </div>
         <div
-          *ngIf="form.get('senha')?.hasError('pattern') && form.get('senha')?.touched"
+          *ngIf="form.get('Password')?.hasError('pattern') && form.get('Password')?.touched"
           class="erro"
         >
           <ion-text color="danger"
@@ -184,12 +184,12 @@
             >Repita a senha</ion-label
           >
           <ion-input
-            formControlName="confirmaSenha"
+            formControlName="ConfirmaPassword"
             type="password"
           ></ion-input>
         </ion-item>
         <div
-          *ngIf="form.hasError('passwordMismatch') && form.get('confirmaSenha')?.touched"
+          *ngIf="form.hasError('passwordMismatch') && form.get('ConfirmaPassword')?.touched"
           class="erro"
         >
           <ion-text color="danger">As senhas não coincidem.</ion-text>
@@ -200,7 +200,7 @@
             checked="false"
             color="danger"
             slot="start"
-            formControlName="termos"
+            formControlName="Termos"
           ></ion-checkbox>
           <ion-label class="checkbox-label"
             >Eu li e aceito os termos da academia</ion-label
