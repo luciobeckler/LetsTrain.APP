@@ -16,12 +16,23 @@ android {
             ignoreAssetsPattern '!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~'
         }
     }
-    buildTypes {
+
+    signingConfigs {
         release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            storeFile file("C:\\Users\\lucio\\OneDrive\\Documentos\\Estudos\\CSharp\\Lets Train\\LetsTrain.APP\\android\\release-key.keystore")
+            storePassword 'beckler111'
+            keyAlias 'app-key'
+            keyPassword 'beckler111'
         }
     }
+
+    buildTypes {
+    release {
+        signingConfig signingConfigs.release  // Configura o keystore para assinar o APK
+        minifyEnabled false  // Habilite ou desabilite o minify conforme necessário
+    }
+}
+
 }
 
 repositories {
